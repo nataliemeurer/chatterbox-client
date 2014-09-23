@@ -14,14 +14,20 @@
   <body>
     <div id="main">
       <h1>chatterbox</h1>
+      <h3>Signed in as: <span id = "username"></span></h3>
         <div id = "chats">
 
         </div>
       <div id = "send">
         <input type = "text" id = "message">
-
-        <input type = "submit" value = "Send" class ="button-3d-primary button button-rounded">
+        <input type = "submit" value = "Send" class ="submit button-3d-primary button button-rounded">
       </div>
     </div>
+      <div id = "sidebar">
+      <h3>Available Chat Rooms</h3>
+        <ul id = "rooms">
+        </ul>
+        <input type = "button" value ="Create New Room" class = "button button-rounded">
+      </div>
   </body>
 </html>

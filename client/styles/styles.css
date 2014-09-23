@@ -1,19 +1,21 @@
 body {
-    background: #eee;
+    background: white;
     text-align: center;
     padding: 0 25px;
+    margin: 0px auto;
     font-family: arial, sans-serif;
+    margin-top: 20px;
 }
 
 #main {
     width: 500px;
-    height: 300px;
+    height: 315px;
     margin: auto;
     text-align: left;
     background: white;
     padding: 50px 60px;
-    border: solid #ddd;
-    border-width: 0 1px 1px 1px;
+    border: 1px solid #ddd;
+    float: left;
 }
 
 #main h1 {
@@ -22,6 +24,19 @@ body {
     margin-bottom: 5px;
     padding: 5px;
     font-family: Arial;
+    float: left;
+}
+
+h3 {
+    float: right;
+}
+
+#sidebar {
+    float: left;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-left: none;
+    height: 394px;
 }
 
 #main h1 span {
@@ -89,7 +104,7 @@ input[type="submit"]:active {
     border: 5px solid black;
     padding: 10px;
     width: 500px;
-    height: 190px;
+    height: 200px;
     overflow-y: scroll;
 }
 
