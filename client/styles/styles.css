@@ -107,6 +107,14 @@ input[type="submit"]:active {
     padding-left: 20px;
     display: block;
 }
+.friendly {
+    list-style-type: none;
+    background: url('../images/user-icon-yellow.png') no-repeat left 0px;
+    background-size: 15px 20px;
+    padding-left: 20px;
+    display: block;
+}
+
 #message {
     width: 400px;
     height: 30px;

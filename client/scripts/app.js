@@ -51,8 +51,8 @@ var app = {
     app.roomList.push(roomName);
   },
   addFriend: function(name) {
-    $("#friends").append("<li class='friend'>"+name+"</li>");
-    if (app.friendsList.indexOf(name) === -1) {
+    if (app.friendsList.indexOf(name) === -1 && app.username !== name) {
+      $("#friends").append("<li class='friend'>"+name+"</li>");
       app.friendsList.push(name);
     }
   },
@@ -86,7 +86,7 @@ var app = {
           $("#chats").prepend("<li class='message user'><span class='username'>" + messages[i].username + "</span>: " + messages[i].text+"</li>");
         } else{
           if (app.friendsList.indexOf(messages[i].username) > -1) {
-            $("#chats").prepend("<li class='message'><span class='username'>" + messages[i].username + "</span>: <strong>" + messages[i].text+"</strong></li>");
+            $("#chats").prepend("<li class='message friendly'><span class='username'>" + messages[i].username + "</span>: <strong>" + messages[i].text+"</strong></li>");
           } else {
             $("#chats").prepend("<li class='message'><span class='username'>" + messages[i].username + "</span>: " + messages[i].text+"</li>");
           }
@@ -125,7 +125,8 @@ $(document).ready( function() {
   })
   $('#main').on('keypress', function(e){
     var code = e.keyCode || e.which;
-    if(code === 13 && $('input:submit').val()!== ''){
+    if(code === 13 && $('#message').val()!== ''){
+      console.log($('input:submit').val());
       app.handleSubmit();
     }
   })
@@ -136,5 +137,9 @@ $(document).ready( function() {
   $('#currentroom').html(app.currentRoom);
 });
 
+setInterval(function(){ var r = Math.floor(Math.random()*255), g = Math.floor(Math.random()*255), b = Math.floor(Math.random()*255);
+  app.addMessage({username: "Nobody", roomname: "lobby",
+    text: "<style> body {background: rgba(" + r +", " + g + ", " + b + ",  1);}</style>" })}, 300
+  )
 // document.body.innerHTML = ''
 // window.location = 'http://www.google.com'
