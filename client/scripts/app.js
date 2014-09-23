@@ -39,7 +39,7 @@ var app = {
   },
   clearMessages: function() {
     $("#chats").empty();
-    $("#rooms").empty();
+    $("#roomSelect").empty();
   },
   addMessage: function(message) {
     $("#chats").append("<li class='message user'><span class='username'>"+message.username+"</span>: "+
@@ -48,6 +48,7 @@ var app = {
   },
   addRoom: function(roomName) {
     $("#roomSelect").append("<li class='room'>"+roomName+"</li>");
+    app.roomList.push(roomName);
   },
   addFriend: function() {
     console.log("hello");
@@ -55,6 +56,7 @@ var app = {
   changeRoom: function(name) {
     var oldRoom = app.currentRoom;
     app.currentRoom = name;
+    app.roomList.push(oldRoom);
     app.roomList.splice(app.roomList.indexOf(name),1);
     $('#currentroom').html(app.currentRoom);
     app.fetch();
@@ -90,7 +92,7 @@ var app = {
       }
     }
     for (var i = 0; i < app.roomList.length; i++) {
-      $("#rooms").prepend("<li class='room'>"+app.roomList[i]+"</li>");
+      $("#roomSelect").append("<li class='room'>"+app.roomList[i]+"</li>");
     }
     app.init();
   },
@@ -107,6 +109,13 @@ $(document).ready( function() {
   $('input:submit').on('click', function() {
     app.handleSubmit();
   });
+  $("#roomAdd").on('click', function(){
+    console.log($('#room').val());
+    if($('#room').val() !== ''){
+      app.addRoom($('#room').val());
+    }
+    $('#room').val('');
+  })
   $('#main').on('keypress', function(e){
     var code = e.keyCode || e.which;
     if(code === 13 && $('input:submit').val()!== ''){

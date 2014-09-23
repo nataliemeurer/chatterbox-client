@@ -122,19 +122,19 @@ input[type="submit"]:active {
   margin: 5px;
 }
 
-#rooms li {
+#roomSelect li {
   list-style: none;
   margin: 0 auto;
   list-style-position:inside;
   padding: 5px 0px;
-  border-bottom: 1px solid #ddd;
-}
-
-#rooms ul:first-child {
   border-top: 1px solid #ddd;
 }
 
-#rooms {
+#roomSelect ul:first-child {
+  border-top: 1px solid #ddd;
+}
+
+#roomSelect{
   list-style-type: none;
   list-style-position:inside;
         margin:0;
