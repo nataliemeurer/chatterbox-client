@@ -2,8 +2,8 @@
 
 var app = {
   init: function() {
-    $('.username').on('click', function(){
-      app.addFriend();
+    $('.username').on('click', function(e){
+      app.addFriend(e.currentTarget.innerHTML);
     });
     $('.room').on('click', function(e) {
       app.changeRoom(e.currentTarget.innerHTML);
@@ -50,8 +50,11 @@ var app = {
     $("#roomSelect").append("<li class='room'>"+roomName+"</li>");
     app.roomList.push(roomName);
   },
-  addFriend: function() {
-    console.log("hello");
+  addFriend: function(name) {
+    $("#friends").append("<li class='friend'>"+name+"</li>");
+    if (app.friendsList.indexOf(name) === -1) {
+      app.friendsList.push(name);
+    }
   },
   changeRoom: function(name) {
     var oldRoom = app.currentRoom;
@@ -82,7 +85,11 @@ var app = {
         if(app.username === messages[i].username){
           $("#chats").prepend("<li class='message user'><span class='username'>" + messages[i].username + "</span>: " + messages[i].text+"</li>");
         } else{
-          $("#chats").prepend("<li class='message'><span class='username'>" + messages[i].username + "</span>: " + messages[i].text+"</li>");
+          if (app.friendsList.indexOf(messages[i].username) > -1) {
+            $("#chats").prepend("<li class='message'><span class='username'>" + messages[i].username + "</span>: <strong>" + messages[i].text+"</strong></li>");
+          } else {
+            $("#chats").prepend("<li class='message'><span class='username'>" + messages[i].username + "</span>: " + messages[i].text+"</li>");
+          }
         }
       }
       messageCount++;
@@ -99,7 +106,8 @@ var app = {
   server: "https://api.parse.com/1/classes/chatterbox",
   currentRoom: "lobby",
   roomList: [],
-  username: null
+  username: null,
+  friendsList: []
 };
 
 app.fetch();
@@ -110,7 +118,6 @@ $(document).ready( function() {
     app.handleSubmit();
   });
   $("#roomAdd").on('click', function(){
-    console.log($('#room').val());
     if($('#room').val() !== ''){
       app.addRoom($('#room').val());
     }
