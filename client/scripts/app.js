@@ -3,12 +3,13 @@
 var app = {
   init: function() {
     $('.username').on('click', function(){
-      console.log("called");
       app.addFriend();
+    });
+    $('.room').on('click', function(e) {
+      app.changeRoom(e.currentTarget.innerHTML);
     });
   },
   send: function(message) {
-    console.log(message);
     $.ajax({
       url: "https://api.parse.com/1/classes/chatterbox",
       type: 'POST',
@@ -16,10 +17,8 @@ var app = {
       contentType: 'application/json',
       success: function(data) {
         console.log('chatterbox: Message sent');
-        console.log(data);
       },
       error: function(data) {
-        console.log(data);
         console.error('chatterbox: Failed to send message');
       }
     });
@@ -37,14 +36,13 @@ var app = {
         console.log("error");
       }
     });
-    app.init();
   },
   clearMessages: function() {
     $("#chats").empty();
     $("#rooms").empty();
   },
   addMessage: function(message) {
-    $("#chats").append("<li class='message'><span class='username'>"+message.username+"</span>: "+
+    $("#chats").append("<li class='message user'><span class='username'>"+message.username+"</span>: "+
         message.text+"</li>");
     app.send(message);
   },
@@ -52,13 +50,20 @@ var app = {
     $("#roomSelect").append("<li class='room'>"+roomName+"</li>");
   },
   addFriend: function() {
-    console.log("added friend");
+    console.log("hello");
+  },
+  changeRoom: function(name) {
+    var oldRoom = app.currentRoom;
+    app.currentRoom = name;
+    app.roomList.splice(app.roomList.indexOf(name),1);
+    $('#currentroom').html(app.currentRoom);
+    app.fetch();
   },
   handleSubmit: function() {
     var idx = window.location.search.indexOf('=') + 1;
     var username = window.location.search.slice(idx);
     var message = {
-      roomname: 'lobby',
+      roomname: app.currentRoom,
       text: $('#message').val(),
       username: username
     }
@@ -71,21 +76,28 @@ var app = {
     var messageCount = 0;
     for (var i = 0; messageCount < 10; i++) {
       messages[i].text.replace(/<script>|<\/script>/g, '');
-
-      $("#chats").prepend("<li class='message'><span class='username'>" + messages[i].username + "</span>: " + messages[i].text+"</li>");
-        messageCount++;
-      if(app.roomList.indexOf(messages[i].roomname) === -1 && messages[i].roomname !== undefined) {
+      if(app.currentRoom === messages[i].roomname) {
+        if(app.username === messages[i].username){
+          $("#chats").prepend("<li class='message user'><span class='username'>" + messages[i].username + "</span>: " + messages[i].text+"</li>");
+        } else{
+          $("#chats").prepend("<li class='message'><span class='username'>" + messages[i].username + "</span>: " + messages[i].text+"</li>");
+        }
+      }
+      messageCount++;
+      if(app.roomList.indexOf(messages[i].roomname) === -1 && messages[i].roomname !== undefined
+         && app.currentRoom !== messages[i].roomname ) {
         app.roomList.push(messages[i].roomname);
       }
     }
     for (var i = 0; i < app.roomList.length; i++) {
       $("#rooms").prepend("<li class='room'>"+app.roomList[i]+"</li>");
     }
-
+    app.init();
   },
   server: "https://api.parse.com/1/classes/chatterbox",
   currentRoom: "lobby",
-  roomList: []
+  roomList: [],
+  username: null
 };
 
 app.fetch();
@@ -95,7 +107,7 @@ $(document).ready( function() {
   $('input:submit').on('click', function() {
     app.handleSubmit();
   });
-  $('body').on('keypress', function(e){
+  $('#main').on('keypress', function(e){
     var code = e.keyCode || e.which;
     if(code === 13 && $('input:submit').val()!== ''){
       app.handleSubmit();
@@ -103,7 +115,9 @@ $(document).ready( function() {
   })
   var idx = window.location.search.indexOf('=') + 1;
   var username = window.location.search.slice(idx);
+  app.username = username;
   $('#username').html(username);
+  $('#currentroom').html(app.currentRoom);
 });
 
 // document.body.innerHTML = ''

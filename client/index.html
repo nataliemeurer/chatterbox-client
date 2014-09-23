@@ -15,9 +15,13 @@
     <div id="main">
       <h1>chatterbox</h1>
       <h3>Signed in as: <span id = "username"></span></h3>
-        <div id = "chats">
 
-        </div>
+      <div id = "chats">
+      </div>
+
+      <div> Current Room: <span id = "currentroom"></span>
+      </div>
+
       <div id = "send">
         <input type = "text" id = "message">
         <input type = "submit" value = "Send" class ="submit button-3d-primary button button-rounded">
@@ -27,7 +31,12 @@
       <h3>Available Chat Rooms</h3>
         <ul id = "rooms">
         </ul>
+        <div>
+          <input type = "text" id = "room">
+        </div>
+        <div>
         <input type = "button" value ="Create New Room" class = "button button-rounded">
+        </div>
       </div>
   </body>
 </html>
